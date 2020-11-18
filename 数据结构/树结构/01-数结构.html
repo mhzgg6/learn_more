@@ -8,37 +8,45 @@
 <body>
   <script>
     //  封装二叉搜索树
-    class BinarySearchTree{
-      constructor() {
+    class BinarySearchTree {
+      constructor () {
+        //  初始化根节点
         this.root = null;
-      }
-
-      Node(key) {
-        this.key = key;
-        this.left = null;
-        this.right = null;
-      }
-
-      //  方法
-      //  插入数据：对外给用户调用的方法
-      insert(key) {
-        //  1.根据key创建节点
-        let newNode = new Node(key);
-
-        //  判断是否是根节点
-        if (this.root == null) {
-          this.root = newNode;
-        } else {
-
+        //  实例化节点
+        this.Node = function (key) {
+          return {
+            key,
+            left: null,
+            right: null
+          }
         }
       }
 
-      //  递归添加节点
-      insertNode(node, newNode) {
+      /**
+       * 插入数据：对外给用户调用的方法
+       * @param { Number } key
+       */
+      insert (key) {
+        //  1.根据key创建节点
+        let newNode = new this.Node(key);
+        //  判断是否是根节点
+        if (this.root === null) {
+          this.root = newNode;
+        } else {
+          this.insertNode(this.root, newNode);
+        }
+      }
+
+      /**
+       * 递归添加节点
+       * @param { Object } node
+       * @param { Object } newNode
+       */
+      insertNode (node, newNode) {
         if (newNode.key < node.key) {//  向左查找
-          if (node.left == null) {
+          if (node.left == null) {//  1.当左子数没有值
             node.left = newNode;
-          } else {
+          } else {//  2.当左子数有值，
             this.insertNode(node.left, newNode);
           }
         } else {//  向右查找
@@ -49,7 +57,49 @@
           }
         }
       }
+
+      /**
+       * 先序遍历
+       * @param { Function } handler
+       */
+      preOrderTraversal (handler) {
+        this.preOrderTraversalNode(this.root, handler);
+      }
+
+      /**
+       * 先序遍历递归调用
+       * @param { Object } node
+       * @param { Function } handler
+       */
+      preOrderTraversalNode (node, handler) {
+        if (node !== null) {
+          //  1.打印当前经过的节点
+          handler(node.key);
+          //  2.遍历所有的左子节点
+          this.preOrderTraversalNode(node.left, handler);
+          //  2.遍历所有的右子节点
+          this.preOrderTraversalNode(node.right, handler);
+        }
+      }
     }
+
+    //  插入测试
+    let a = new BinarySearchTree()
+    a.insert(11)
+    a.insert(7)
+    a.insert(5)
+    a.insert(9)
+    a.insert(15)
+    a.insert(13)
+    a.insert(20)
+    console.log(a);
+
+    //  测试先序遍历
+    let resString = '';
+    a.preOrderTraversal((key) => {
+      resString += key + " ";
+    })
+    alert(resString);
   </script>
 </body>
 </html>
