@@ -147,17 +147,41 @@
       search (key) {
         return this.searchNode(this.root, key);
       }
+      /**
+       * 递归
+       * @param { Object } node
+       * @param { Number } key
+       */
       searchNode (node, key) {  
         if (node === null) {//  根节点为空
           return false; 
         } else if (node.key == key) {// 传入值等于根节点
           return true;
         } else if (key < node.key) {//  传入值小于根节点
-          this.searchNode(node.left, key);
+          return this.searchNode(node.left, key);
         } else {//  传入值大于根节点
-          this.searchNode(node.right, key);
+          return this.searchNode(node.right, key);
         }
       }
+
+      /**
+       * 循环
+       * @return true/false
+       */
+      // search (key) {
+      //   let node = this.root;
+      //   while (node !== null) {
+      //     if (key < node.key) {
+      //       node = node.left;
+      //     } else if (key > node.key) {
+      //       node = node.right;
+      //     } else {
+      //       return true;
+      //     }
+      //   }
+      //   return false;
+      // }
+
     }
 
     //  插入测试
@@ -186,7 +210,7 @@
     console.log(resString);//5 7 9 11 13 15 20
     console.log(a.min());//5
     console.log(a.max());//20
-    console.log(a.search(5));
+    console.log(a.search(5));//true
   </script>
 </body>
 </html>
