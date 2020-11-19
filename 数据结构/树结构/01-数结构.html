@@ -81,6 +81,83 @@
           this.preOrderTraversalNode(node.right, handler);
         }
       }
+
+      /**
+       * 中序遍历
+       * @param { Function } handler
+       */
+      midOrderTraversal (handler) {
+        this.midOrderTraversalNode(this.root, handler);
+      }
+
+      /**
+       * 递归遍历
+       * @param { Object } node
+       * @param { Function } handler
+       */
+      midOrderTraversalNode (node, handler) {
+        if (node !== null) {
+          this.midOrderTraversalNode(node.left, handler);
+          handler(node.key);
+          this.midOrderTraversalNode(node.right, handler);
+        }
+      }
+
+      /**
+       * 最小值
+       * @return value
+       */
+      min () {
+        const result = this.minNode(this.root)
+        return result !== null ? result.key : null;
+      } 
+      minNode (node) {
+        if (node === null) {
+          return node;
+        }
+        while (node && node.left !== null) {
+          node = node.left;
+        }
+        return node;
+      }
+
+      /**
+       * 最大值
+       * @return value
+       */
+       max () {
+        const result = this.maxNode(this.root)
+        return result !== null ? result.key : null;
+      } 
+      maxNode (node) {
+        if (node === null) {
+          return node;
+        }
+        while (node && node.right !== null) {
+          node = node.right;
+        }
+        return node;
+      }
+
+      /**
+       * 查找节点
+       * @param { Number } key
+       * @return { Boolean } true/false
+       */
+      search (key) {
+        return this.searchNode(this.root, key);
+      }
+      searchNode (node, key) {  
+        if (node === null) {//  根节点为空
+          return false; 
+        } else if (node.key == key) {// 传入值等于根节点
+          return true;
+        } else if (key < node.key) {//  传入值小于根节点
+          this.searchNode(node.left, key);
+        } else {//  传入值大于根节点
+          this.searchNode(node.right, key);
+        }
+      }
     }
 
     //  插入测试
@@ -99,7 +176,17 @@
     a.preOrderTraversal((key) => {
       resString += key + " ";
     })
-    alert(resString);
+    console.log(resString); //11 7 5 9 15 13 20
+
+    //  测试中序遍历
+    resString = ''
+    a.midOrderTraversal((key) => {
+      resString += key + " ";
+    })
+    console.log(resString);//5 7 9 11 13 15 20
+    console.log(a.min());//5
+    console.log(a.max());//20
+    console.log(a.search(5));
   </script>
 </body>
 </html>
