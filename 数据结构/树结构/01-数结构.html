@@ -188,11 +188,77 @@
        * @return true/false
        */
       remove (key) {
+        //  1.定义临时保存的变量
         let current = this.root,
             parent = null,
             isLeftChild = true;
+        //  2.开始查找节点
         while (current.key !== key) {
-          
+          parent = current;
+          if (key < current.key) {
+            isLeftChild = true;
+            current = current.left;
+          } else {
+            isLeftChild = false;
+            current = current.right;
+          }
+          //  current指向null,那么说明没有找到要删除的数据
+          if (current === null) return false
+        }
+
+        //  情况一：没有子节点
+        if (current.left == null && current.right == null) {
+          if (current == this.root) {
+            this.root == null;
+          } else if (isLeftChild) {
+            parent.left = null;
+          } else {
+            parent.right = null;
+          }
+        } else if (current.right == null) {//  情况二：有一个左子节点 
+          if (current == this.root) {
+            this.root = current.left;
+          } else if (isLeftChild) {
+            parent.left = current.left;
+          } else {
+            parent.right = current.left;
+          }
+        } else if (current.left == null) {//  情况三：有一个右子节点 
+          if (current == this.root) {
+            this.root = current.right;
+          } else if (isLeftChild) {
+            parent.left = current.right;
+          } else {
+            parent.right = current.right;
+          }
+        } else {//  情况四：有两个子节点
+          //  获取后继节点
+          let successor = this.getSuccessor(current);
+          if (current == this.root) {
+            this.root = successor;
+          } else if (isLeftChild) {
+            parent.left = successor;
+          } else {
+            parent.right = successor;
+          }
+        }
+
+        return true;
+      }
+
+      getSuccessor(delNode) {
+        let successorParent = delNode,
+            successor = delNode,
+            current = delNode.right;//  从右子树开始查找
+        //  寻找节点
+        while(current != null) {
+          successorParent = successor;
+          successor = current;
+          current = current.left;
+        }
+        if (successor != delNode.right) {
+          successorParent.left = successor.right;
+          successor.right = delNode.right;
         }
       }
     }
